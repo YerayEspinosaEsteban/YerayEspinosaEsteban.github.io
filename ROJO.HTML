@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yeray Espinosa — Desarrollador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./Yeray Espinosa — Cybersecurity & AI Security_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --primary: #FF3333;
+    --dark-bg: #0A0A0F;
+    --card-dark: #130808;
+    --text-main: #FFFFFF;
+    --text-gray: #B0A8A8;
+    --border-red: rgba(255, 51, 51, 0.4);
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--dark-bg);
+    color: var(--text-main);
+    min-height: 100vh;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--card-dark);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-red);
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 51, 51, 0.15);
+    pointer-events: none;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-decoration: none;
+    color: var(--primary);
+    border: 1px solid var(--border-red);
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(255, 51, 51, 0.08);
+  }
+
+  .back-link:hover { opacity: 0.8; }
+
+  .header-left { flex: 1; }
+
+  .name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .title-pill {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    background: rgba(255, 51, 51, 0.1);
+    color: var(--primary);
+    border: 1px solid var(--border-red);
+    padding: 3px 12px;
+    border-radius: 20px;
+  }
+
+  .contact-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-top: 14px;
+  }
+
+  .contact-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-gray);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .contact-item:hover { color: #fff; }
+  .contact-item span { color: var(--primary); }
+
+  .pokeball-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 2;
+  }
+
+  /* BODY GRID */
+  .body {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-dark);
+    border: 1px solid var(--border-red);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:last-child { margin-bottom: 0; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-main);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-red);
+  }
+
+  /* PERFIL */
+  .profile-text {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--text-gray);
+    position: relative;
+    z-index: 2;
+  }
+  .profile-text strong { color: var(--text-main); font-weight: 600; }
+
+  /* JOBS */
+  .job { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-red); position: relative; z-index: 2; }
+  .job:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .job-title { font-weight: 700; font-size: 14px; color: var(--text-main); }
+  .job-company { font-size: 12.5px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+  .job-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-gray);
+    background: rgba(255, 51, 51, 0.05);
+    border: 1px solid var(--border-red);
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .bullet-list { list-style: none; margin-top: 6px; }
+  .bullet-list li {
+    display: flex;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-gray);
+    line-height: 1.65;
+    margin-bottom: 5px;
+  }
+  .bullet-list li strong { color: var(--text-main); font-weight: 600; }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    min-width: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; position: relative; z-index: 2; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 4px;
+    border: 1px solid var(--border-red);
+    color: var(--primary);
+    background: rgba(255, 51, 51, 0.05);
+  }
+
+  /* PROJECTS */
+  .project {
+    background: rgba(255, 51, 51, 0.03);
+    border: 1px solid var(--border-red);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+  .project:last-child { margin-bottom: 0; }
+  .project-title { font-weight: 700; font-size: 13.5px; color: var(--text-main); margin-bottom: 2px; }
+  .project-sub { font-family: var(--mono); font-size: 10.5px; color: var(--primary); margin-bottom: 6px; }
+  .project-desc { font-size: 12px; color: var(--text-gray); line-height: 1.65; }
+  .project-desc strong { color: var(--text-main); font-weight: 600; }
+
+  /* SIDEBAR */
+  .sidebar-card {
+    background: var(--card-dark);
+    border: 1px solid var(--border-red);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .sidebar-card:last-child { margin-bottom: 0; }
+
+  .sidebar-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .edu-item { margin-bottom: 12px; }
+  .edu-item:last-child { margin-bottom: 0; }
+  .edu-title { font-weight: 600; font-size: 12.5px; color: var(--text-main); }
+  .edu-sub { font-size: 11px; color: var(--text-gray); margin-top: 2px; font-family: var(--mono); }
+
+  .skill-group { margin-bottom: 12px; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-group-name { font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+  .skill-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border-red);
+    color: var(--primary);
+    background: rgba(255, 51, 51, 0.05);
+  }
+
+  .logro-item {
+    display: flex;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text-gray);
+    line-height: 1.5;
+    margin-bottom: 7px;
+    align-items: flex-start;
+  }
+  .logro-item:last-child { margin-bottom: 0; }
+  .logro-dot {
+    width: 5px;
+    height: 5px;
+    min-width: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .cert-item { font-size: 11.5px; color: var(--text-gray); margin-bottom: 5px; font-family: var(--mono); position: relative; z-index: 2; }
+  .cert-item:last-child { margin-bottom: 0; }
+
+  .type-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--border-red);
+    position: relative;
+    z-index: 2;
+  }
+
+  .type-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+
+  .footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-gray);
+  }
+
+  @media (max-width: 680px) {
+    .body { grid-template-columns: 1fr; }
+    .header { flex-direction: column; }
+    .pokeball-badge { flex-direction: row; align-items: center; }
+    .name { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <a class="back-link" href="index.html">↩ Menu</a>
+    <div class="header-left">
+      <div class="name">Yeray Espinosa<br>Esteban</div>
+      <span class="title-pill">Fullstack Developer · Backend · Cloud · AI</span>
+      <div class="contact-grid">
+        <a class="contact-item" href="mailto:yeray0303@gmail.com"><span>✉</span> yeray0303@gmail.com</a>
+        <span class="contact-item"><span>✆</span> 665 17 86 47</span>
+        <a class="contact-item" href="https://www.linkedin.com/in/yeray-espinosa-esteban-b0058a348/" target="_blank"><span>in</span> linkedin</a>
+        <a class="contact-item" href="https://github.com/YerayEspinosaEsteban" target="_blank"><span>⌥</span> github</a>
+        <span class="contact-item"><span>◎</span> Carnet B · vehículo propio</span>
+      </div>
+    </div>
+
+    <div class="pokeball-badge">
+      <img src="./Yeray Espinosa — Cybersecurity & AI Security_files/png-clipart-pokemon-sun-and-moon-pokemon-x-and-y-litten-snivy-pok-eacute-mon-go-mammal-cat-like-mammal-removebg-preview.png" alt="Primal Kyogre" style="width: 100px; filter: drop-shadow(0 0 10px rgba(255,51,51,0.7));">
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <div class="main">
+
+      <!-- PERFIL -->
+      <div class="card">
+        <div class="section-label">Perfil</div>
+        <p class="profile-text">
+          Desarrollador Fullstack con orientacion a <strong>backend</strong>, actualmente en practicas en
+          <strong>GFT Technologies</strong> trabajando en proyectos reales de integracion de sistemas y APIs.
+          Experiencia en desarrollo fullstack con Java, TypeScript y React, despliegue en AWS y automatizacion
+          de flujos de datos. Conocimiento aplicado de <strong>seguridad en el desarrollo</strong> (DevSecOps, OWASP 2025)
+          e <strong>inteligencia artificial</strong> aplicada. Tambien tengo base en <strong>entornos bancarios y financieros</strong>,
+          especialmente en trazabilidad, integracion de APIs y tratamiento de datos sensibles. Acostumbrado a cliente real,
+          equipo y entorno profesional.
+        </p>
+        <div class="type-row" style="margin-top:12px;">
+          <span class="type-badge">Backend</span>
+          <span class="type-badge">Cloud AWS</span>
+          <span class="type-badge">AI aplicada</span>
+          <span class="type-badge">DevSecOps</span>
+          <span class="type-badge">Fullstack</span>
+        </div>
+      </div>
+
+      <!-- EXPERIENCIA -->
+      <div class="card">
+        <img src="./Yeray Espinosa — Cybersecurity & AI Security_files/download-primal-groudon-pokemon-groudon-dragon-animal-seafood-transparent-png-2837104-removebg-preview.png" alt="Primal Groudon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; opacity: 0.12; pointer-events: none; z-index: 1; filter: hue-rotate(-30deg) saturate(1.1);">
+
+        <div class="section-label">Experiencia</div>
+
+        <div class="job">
+          <div class="job-header">
+            <div>
+              <div class="job-title">Cybersecurity & AI Developer Intern</div>
+              <div class="job-company">GFT Technologies Espana</div>
+            </div>
+            <span class="job-date">2024 – actual</span>
+          </div>
+          <ul class="bullet-list">
+            <li><div class="dot"></div><span>Integracion de sistemas de seguridad empresariales via <strong>APIs REST</strong>: VirusTotal, Active Directory, Slack, Email — automatizacion completa de flujos de datos entre servicios</span></li>
+            <li><div class="dot"></div><span>Pipeline de datos <strong>Wazuh → SQL → Power BI</strong> para reporting ejecutivo en tiempo real via API REST</span></li>
+            <li><div class="dot"></div><span>Conexion con servicios cloud multiproveedor: <strong>AWS CloudTrail</strong>, Azure Activity Logs y Graph, GCP Admin SDK</span></li>
+            <li><div class="dot"></div><span>Despliegue y gestion de infraestructura sobre <strong>Docker y Linux</strong> en entorno empresarial real</span></li>
+            <li><div class="dot"></div><span>Analisis de vulnerabilidades en sistemas <strong>LLM y RAG</strong> — aplicacion practica de AI Security en entorno profesional</span></li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Java</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">API REST</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Linux</span>
+            <span class="tag">AWS</span>
+            <span class="tag">Azure</span>
+            <span class="tag">GCP</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Power BI</span>
+            <span class="tag">LLM Security</span>
+            <span class="tag">RAG</span>
+          </div>
+        </div>
+
+        <div class="job">
+          <div class="job-header">
+            <div>
+              <div class="job-title">Tecnico en Sistemas y Redes — Practicas</div>
+              <div class="job-company">Cibergob</div>
+            </div>
+            <span class="job-date">Mar – Jun 2024</span>
+          </div>
+          <ul class="bullet-list">
+            <li><div class="dot"></div><span>Apoyo en implantacion del <strong>Esquema Nacional de Seguridad (ENS)</strong> en Administraciones Publicas y PYMES bajo metodologia MADAC</span></li>
+            <li><div class="dot"></div><span>Adecuacion al <strong>RGPD</strong> y analisis de infraestructuras de red para identificar brechas de cumplimiento normativo</span></li>
+            <li><div class="dot"></div><span>Contacto con entornos de <strong>Administracion Electronica</strong>: gestion de accesos, inventario de activos y documentacion de politicas de seguridad</span></li>
+          </ul>
+          <div class="tags">
+            <span class="tag">ENS</span>
+            <span class="tag">RGPD</span>
+            <span class="tag">Gobierno de ciberseguridad</span>
+            <span class="tag">Auditoria normativa</span>
+            <span class="tag">Administracion Electronica</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROYECTOS -->
+      <div class="card">
+        <img src="./Yeray Espinosa — Cybersecurity & AI Security_files/800px-Volcarona.png" alt="Volcarona" style="position: absolute; bottom: 0; right: -20px; width: 220px; opacity: 0.15; pointer-events: none; z-index: 1; filter: drop-shadow(0 0 8px rgba(255,51,51,0.5)) grayscale(30%);">
+
+        <div class="section-label">Proyectos</div>
+
+        <div class="project">
+          <div class="project-title">Unnion — App movil de voluntariado ambiental y emergencias</div>
+          <div class="project-sub">Trabajo Fin de Grado · CFGS DAM · 909 horas · Sep 2024 – Mar 2025</div>
+          <p class="project-desc">
+            Aplicacion movil para conectar personas que quieren ayudar con organizaciones de <strong>voluntariado ambiental y de emergencias</strong> en Aragon. Desarrollada tras investigacion real con entidades del tercer sector, analisis de necesidades y reuniones con organizaciones. Incluye arquitectura de software completa, desarrollo, documentacion y validacion. <strong>Especialmente valorada por el tribunal</strong> en la defensa final.
+          </p>
+          <div class="tags">
+            <span class="tag">React Native</span><span class="tag">App movil</span><span class="tag">Arquitectura software</span><span class="tag">UX Research</span><span class="tag">TFG · 909h</span><span class="tag">Producto real</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="project-title">ProtexWear — E-commerce B2B/B2C con intranet de clientes</div>
+          <div class="project-sub">Freelance en equipo · Cliente real · protexwear.es</div>
+          <p class="project-desc">
+            Plataforma e-commerce completa para empresa de ropa de trabajo. Rol de <strong>Disenador UI y desarrollador frontend</strong> en equipo de 7 personas con metodologia agil y reuniones con cliente real. Autenticacion con <strong>AWS Cognito</strong>, pasarelas de pago (Bizum, PayPal), precios personalizados, intranet B2B y gestion de roles. Infraestructura sobre <strong>AWS Amplify</strong> con S3.
+          </p>
+          <div class="tags">
+            <span class="tag">React / Next.js</span><span class="tag">AWS Amplify</span><span class="tag">AWS Cognito</span><span class="tag">AWS S3</span><span class="tag">Bizum · PayPal</span><span class="tag">UI Design</span><span class="tag">Git / GitHub</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="project-title">Hamburgueseria Online — Aplicacion web full-stack</div>
+          <p class="project-desc">API REST con Java J2EE y arquitectura Servlet, frontend en JavaScript/HTML/CSS. Despliegue en AWS EC2, base de datos PostgreSQL en RDS y almacenamiento en S3.</p>
+          <div class="tags">
+            <span class="tag">Java J2EE</span><span class="tag">AWS EC2 · RDS · S3</span><span class="tag">PostgreSQL</span><span class="tag">JavaScript</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="sidebar-card">
+        <div class="sidebar-content">
+          <div class="section-label">Educacion</div>
+          <div class="edu-item">
+            <div class="edu-title">CFGS Desarrollo de Aplicaciones Multiplataforma</div>
+            <div class="edu-sub">Centro San Valero · 2024 – 2026</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title">CFGM Sistemas Microinformaticos y Redes</div>
+            <div class="edu-sub">Colegio Montessori · 2022 – 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-content">
+          <div class="section-label">Habilidades</div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Backend</div>
+            <div class="skill-pills">
+              <span class="skill-pill">Java · J2EE</span>
+              <span class="skill-pill">NestJS</span>
+              <span class="skill-pill">Express</span>
+              <span class="skill-pill">API REST</span>
+              <span class="skill-pill">PostgreSQL</span>
+              <span class="skill-pill">DynamoDB</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Frontend</div>
+            <div class="skill-pills">
+              <span class="skill-pill">React</span>
+              <span class="skill-pill">Next.js</span>
+              <span class="skill-pill">TypeScript</span>
+              <span class="skill-pill">JavaScript</span>
+              <span class="skill-pill">HTML5 · CSS3</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Mobile</div>
+            <div class="skill-pills">
+              <span class="skill-pill">React Native</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Cloud & DevOps</div>
+            <div class="skill-pills">
+              <span class="skill-pill">AWS</span>
+              <span class="skill-pill">Azure</span>
+              <span class="skill-pill">GCP</span>
+              <span class="skill-pill">Docker</span>
+              <span class="skill-pill">Linux</span>
+              <span class="skill-pill">Git</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Seguridad & IA</div>
+            <div class="skill-pills">
+              <span class="skill-pill">DevSecOps</span>
+              <span class="skill-pill">OWASP 2025</span>
+              <span class="skill-pill">LLM Security</span>
+              <span class="skill-pill">RAG Security</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Otros</div>
+            <div class="skill-pills">
+              <span class="skill-pill">Python</span>
+              <span class="skill-pill">SAP</span>
+              <span class="skill-pill">Power BI</span>
+              <span class="skill-pill">Oracle</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-content">
+          <div class="section-label">Logros</div>
+          <div class="logro-item"><div class="logro-dot"></div><span><strong>Concursos y retos destacados:</strong> 2º lugar AWS JAM Aragón 2025, finalista AWS Gameday Nacional 2025 y semifinalista Innovafest Aragón 2025.</span></div>
+          <div class="logro-item"><div class="logro-dot"></div><span>2º lugar AWS JAM Aragon 2025</span></div>
+          <div class="logro-item"><div class="logro-dot"></div><span>Finalista AWS Gameday Nacional 2025</span></div>
+          <div class="logro-item"><div class="logro-dot"></div><span>Semifinalista Innovafest Aragon 2025</span></div>
+          <div class="logro-item"><div class="logro-dot"></div><span>Hackathon The Wave 2026</span></div>
+          <div class="logro-item"><div class="logro-dot"></div><span>TFG especialmente valorado por tribunal</span></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-content">
+          <div class="section-label">Certificaciones</div>
+          <div class="cert-item">AI Security Path — TryHackMe</div>
+          <div class="cert-item">Cloud & AWS Fundamentals</div>
+          <div class="cert-item">SAP Conceptos e iniciacion</div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-content">
+          <div class="section-label">Idiomas</div>
+          <div class="cert-item">Espanol — nativo</div>
+          <div class="cert-item">Ingles — B1</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    Yeray Espinosa Esteban · yeray0303@gmail.com
+  </div>
+
+</div>
+
+</body>
+</html>
