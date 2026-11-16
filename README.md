@@ -1,12 +1,16 @@
 # yerayespinosaesteban.github.io
 
-Portfolio jugable de **Yeray Espinosa Esteban** — Security Architect / Security by Design.
-Controlas a un avatar low-poly que camina por un pequeño planeta y descubre 5 zonas.
+Portfolio 3D de **Yeray Espinosa Esteban** — Security Architect / Security by Design.
+
+Un diorama isométrico interactivo: un búnker cyber-cozy de arquitectura de seguridad flotando en la oscuridad.
+Haz clic en cada rincón y la cámara vuela hasta él; el contenido aparece **dentro** de las pantallas de la escena.
 
 Live: https://yerayespinosaesteban.github.io/
 
+Inspirado en el concepto de interacción de [Jesse's Ramen](https://www.jesse-zhou.com/) (cámara orbital limitada + zoom con GSAP a objetos con pantallas). Escena, modelos y código propios.
+
 ## Stack
-React 19 · TypeScript · Vite · Three.js / React Three Fiber / drei · Zustand · Tailwind CSS 4
+React 19 · TypeScript · Vite · Three.js / React Three Fiber / drei · @react-three/postprocessing (Bloom, SMAA, ACES) · GSAP · Zustand · Tailwind CSS 4
 
 ## Desarrollo
 ```bash
@@ -15,22 +19,22 @@ npm run dev       # http://localhost:5173
 npm run build     # genera dist/
 npm run preview   # sirve dist/ en local
 ```
+`?nofx` en la URL desactiva postprocesado y reflejos (modo ligero).
 
 ## Estructura
 - `src/data/profile.ts` — **todo el contenido** (perfil, stack, experiencia, proyectos, formación). Edita aquí.
-- `src/game/`
-  - `sphere.ts` — matemáticas del planeta (lat/lon → vector, transporte sobre la esfera, PRNG).
-  - `zones.ts` — posición, color y radio de las 5 zonas.
-  - `Player.tsx` — controlador: movimiento sobre la esfera, colisiones, autopiloto, salto, cámara en tercera persona, hierba alta.
-  - `Avatar.tsx` — personaje y animaciones procedurales.
-  - `Planet.tsx` / `decor.ts` — terreno low-poly, caminos y decoración instanciada.
-  - `Buildings.tsx` — los 5 edificios.
-  - `World.tsx` — Canvas, cielo, atmósfera, nubes y estrellas.
-- `src/ui/` — HUD, diálogos de zona, combate Pokémon, joystick táctil, intro y Modo CV (imprimible a PDF).
+- `src/scene/`
+  - `Experience.tsx` — Canvas, luces, postprocesado, `OrbitControls` con límites y `CameraRig` (vuelos GSAP a cada anclaje).
+  - `Room.tsx` — base flotante, paredes, suelo reflectante, cables, tuberías, ventilador, póster, planta, polvo.
+  - `Desk.tsx` — setup multi-monitor, torre con refrigeración líquida, silla, taza con vapor, neón `YERAY // SEC-ARCH` → **Sobre mí**.
+  - `Arcade.tsx` — recreativa `PROJECTS` con botones físicos → **Proyectos**.
+  - `ServerRack.tsx` — racks con LEDs y pedestal holográfico con escudos → **Experiencia & Stack**.
+  - `Shelf.tsx` — Holocrón, Pokéball, medallas, trofeos, diploma, sable → **Logros**.
+  - `Panels.tsx` — contenido HTML pegado a las superficies 3D (`<Html transform>`); en móvil se muestra en una hoja inferior.
+  - `screens.ts` — texturas animadas de las pantallas (código, SIEM, arcade, póster…).
+  - `common.tsx` — neones, objetos interactivos, ventiladores, cables, anclajes de cámara.
+- `src/ui/` — Loader, Overlay (sonido, redes, volver) y Modo CV imprimible.
 - `public/legacy/` — portfolio v1, accesible en `/legacy/`.
-
-## Controles
-WASD / flechas para moverte · Shift para correr · Espacio para saltar · E para inspeccionar · clic en el suelo para ir a un punto · arrastrar para girar la cámara · 1-5 para viajar a cada zona · joystick en móvil.
 
 ## Despliegue
 `.github/workflows/deploy.yml` compila y publica en GitHub Pages en cada push a `main` (Pages → Source: GitHub Actions).

@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { certifications, education, experience, profile, projects, stack } from '../data/profile'
-import { useGame } from '../game/store'
+import { useStore } from '../scene/store'
 
 /** Plain, fast, printable résumé view for recruiters in a hurry (also the no-WebGL fallback). */
 export function CVMode({ standalone = false }: { standalone?: boolean }) {
-  const cv = useGame((s) => s.cv)
-  const setCv = useGame((s) => s.setCv)
+  const cv = useStore((s) => s.cv)
+  const setCv = useStore((s) => s.setCv)
   const visible = standalone || cv
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function CVMode({ standalone = false }: { standalone?: boolean }) {
       <article className="cv-card rise mx-auto max-w-3xl rounded-2xl bg-white p-6 text-slate-800 shadow-2xl sm:p-10" onClick={(e) => e.stopPropagation()}>
         <div className="no-print mb-6 flex flex-wrap justify-between gap-2">
           {standalone ? <span className="text-sm text-slate-500">Tu navegador no soporta WebGL: aquí tienes la versión clásica.</span> : (
-            <button onClick={() => setCv(false)} className="rounded-lg border-2 border-slate-800 px-3 py-1.5 text-sm font-semibold hover:bg-slate-100">← Volver al planeta</button>
+            <button onClick={() => setCv(false)} className="rounded-lg border-2 border-slate-800 px-3 py-1.5 text-sm font-semibold hover:bg-slate-100">← Volver al búnker</button>
           )}
           <button onClick={() => window.print()} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white hover:bg-slate-700">⬇ Guardar PDF / Imprimir</button>
         </div>
