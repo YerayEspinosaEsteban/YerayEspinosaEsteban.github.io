@@ -3,18 +3,19 @@ import { create } from 'zustand'
 import { projects } from '../data/profile'
 import { sfx } from './sfx'
 
-export type FocusId = 'about' | 'projects' | 'experience' | 'certs'
+export type FocusId = 'about' | 'projects' | 'experience' | 'certs' | 'simba'
 
 /** Narrow screens: panels go to a bottom sheet instead of being glued in 3D (tiny text otherwise). */
 export const COMPACT = typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
 
 export const FOCUS_META: Record<FocusId, { label: string; hint: string; color: string }> = {
-  about: { label: 'Sobre mí', hint: 'Setup multi-monitor', color: '#22d3ee' },
-  projects: { label: 'Proyectos', hint: 'Máquina arcade', color: '#f472b6' },
-  experience: { label: 'Experiencia & Stack', hint: 'Rack y escudo holográfico', color: '#a78bfa' },
-  certs: { label: 'Logros', hint: 'Estantería de coleccionista', color: '#fbbf24' },
+  about: { label: 'Sobre mí', hint: 'Escritorio del entrenador', color: '#3b82f6' },
+  projects: { label: 'Proyectos', hint: 'Tele retro y consola', color: '#e2574c' },
+  experience: { label: 'Experiencia & Stack', hint: 'Pizarra con farolillo y homelab', color: '#22a35a' },
+  certs: { label: 'Logros', hint: 'Estantería de trofeos', color: '#f59e0b' },
+  simba: { label: 'Simba', hint: 'El guardián del campamento', color: '#f97316' },
 }
-export const FOCUS_ORDER: FocusId[] = ['about', 'projects', 'experience', 'certs']
+export const FOCUS_ORDER: FocusId[] = ['about', 'projects', 'experience', 'certs', 'simba']
 
 /**
  * Camera anchors: each interactive object registers an Object3D placed at the centre of its
@@ -72,3 +73,5 @@ export const useStore = create<State>((set, get) => ({
   setProject: (project) => { sfx.bloop(); set({ project }) },
   setCv: (cv) => set({ cv }),
 }))
+
+export const SIMBA_LINE = '¡Guau! Soy Simba, el guardián de la arquitectura. Haz clic en los rincones del campamento para ver los proyectos de Yeray.'

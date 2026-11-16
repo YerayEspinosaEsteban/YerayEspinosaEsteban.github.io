@@ -1,4 +1,4 @@
-/** Synthesised UI sounds + a soft server-room ambience. Muted by default; no audio files. */
+/** Synthesised UI sounds + a night ambience (campfire crackle + crickets). Muted by default; no audio files. */
 let ctx: AudioContext | null = null
 let master: GainNode | null = null
 let ambience: { stop: () => void } | null = null
@@ -40,44 +40,65 @@ function startAmbience() {
   if (!a || !master || ambience) return
   const out = a.createGain()
   out.gain.value = 0
-  out.gain.linearRampToValueAtTime(0.05, a.currentTime + 2)
+  out.gain.linearRampToValueAtTime(0.07, a.currentTime + 2)
+  out.connect(master)
+  // fire roar: brown-ish noise through a lowpass
+  const buf = a.createBuffer(1, a.sampleRate * 3, a.sampleRate)
+  const d = buf.getChannelData(0)
+  let last = 0
+  for (let i = 0; i < d.length; i++) { last = last * 0.98 + (Math.random() * 2 - 1) * 0.02; d[i] = last * 7 }
+  const roar = a.createBufferSource()
+  roar.buffer = buf
+  roar.loop = true
   const lp = a.createBiquadFilter()
   lp.type = 'lowpass'
-  lp.frequency.value = 420
-  lp.connect(out).connect(master)
-  // low server hum: two detuned saws through a lowpass
-  const oscs = [55, 55.4, 110.3].map((f) => {
-    const o = a.createOscillator()
-    o.type = 'sawtooth'
-    o.frequency.value = f
+  lp.frequency.value = 380
+  const rg = a.createGain()
+  rg.gain.value = 0.5
+  roar.connect(lp).connect(rg).connect(out)
+  roar.start()
+  // crackles: tiny filtered noise clicks at random moments
+  const pop = (t: number, vol: number) => {
+    const n = a.createBufferSource()
+    const b = a.createBuffer(1, Math.floor(a.sampleRate * 0.03), a.sampleRate)
+    const c = b.getChannelData(0)
+    for (let i = 0; i < c.length; i++) c[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / c.length, 4)
+    n.buffer = b
+    const bp = a.createBiquadFilter()
+    bp.type = 'bandpass'
+    bp.frequency.value = 1200 + Math.random() * 2800
     const g = a.createGain()
-    g.gain.value = f > 100 ? 0.12 : 0.3
-    o.connect(g).connect(lp)
-    o.start()
-    return o
-  })
-  // airy fan noise
-  const buf = a.createBuffer(1, a.sampleRate * 2, a.sampleRate)
-  const d = buf.getChannelData(0)
-  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1
-  const noise = a.createBufferSource()
-  noise.buffer = buf
-  noise.loop = true
-  const bp = a.createBiquadFilter()
-  bp.type = 'bandpass'
-  bp.frequency.value = 900
-  bp.Q.value = 0.6
-  const ng = a.createGain()
-  ng.gain.value = 0.35
-  noise.connect(bp).connect(ng).connect(out)
-  noise.start()
+    g.gain.value = vol
+    n.connect(bp).connect(g).connect(out)
+    n.start(t)
+  }
+  let crackleTimer = 0
+  const crackle = () => {
+    if (muted) return
+    const now = a.currentTime
+    const burst = Math.random() < 0.25 ? 3 + Math.floor(Math.random() * 4) : 1
+    for (let k = 0; k < burst; k++) pop(now + k * (0.02 + Math.random() * 0.05), 0.6 + Math.random() * 1.4)
+    crackleTimer = window.setTimeout(crackle, 80 + Math.random() * 500)
+  }
+  crackle()
+  // crickets: pulsed high sine, very soft
+  let cricketTimer = 0
+  const cricket = () => {
+    if (muted) return
+    const f = 4300 + Math.random() * 500
+    for (let k = 0; k < 3; k++) tone(f, 0.035, 'sine', 0.006, k * 0.06)
+    cricketTimer = window.setTimeout(cricket, 700 + Math.random() * 1600)
+  }
+  cricketTimer = window.setTimeout(cricket, 900)
   ambience = {
     stop: () => {
       const t = a.currentTime
+      clearTimeout(crackleTimer)
+      clearTimeout(cricketTimer)
       out.gain.cancelScheduledValues(t)
       out.gain.setValueAtTime(out.gain.value, t)
       out.gain.linearRampToValueAtTime(0, t + 0.4)
-      setTimeout(() => { oscs.forEach((o) => o.stop()); noise.stop() }, 500)
+      setTimeout(() => roar.stop(), 500)
       ambience = null
     },
   }
@@ -89,8 +110,10 @@ export const sfx = {
     if (m) ambience?.stop()
     else { startAmbience(); tone(660, 0.12, 'triangle', 0.05); tone(990, 0.16, 'triangle', 0.04, 0.08) }
   },
-  tick: () => tone(1800, 0.03, 'square', 0.012),
+  tick: () => tone(1500, 0.04, 'triangle', 0.015),
   bloop: () => tone(520, 0.12, 'sine', 0.07, 0, 880),
-  whoosh: () => { tone(180, 0.5, 'sine', 0.05, 0, 520); tone(1200, 0.06, 'triangle', 0.025, 0.05) },
-  enter: () => [392, 523, 659, 784].forEach((f, i) => tone(f, 0.18, 'triangle', 0.05, i * 0.08)),
+  whoosh: () => { tone(220, 0.4, 'sine', 0.04, 0, 440); tone(880, 0.08, 'triangle', 0.02, 0.06) },
+  enter: () => [392, 494, 587, 784].forEach((f, i) => tone(f, 0.2, 'triangle', 0.05, i * 0.1)),
+  /** two soft little barks */
+  woof: () => { tone(340, 0.09, 'sawtooth', 0.035, 0, 210); tone(380, 0.11, 'sawtooth', 0.035, 0.18, 230) },
 }
