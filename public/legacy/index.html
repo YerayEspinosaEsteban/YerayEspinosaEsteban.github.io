@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yeray Espinosa — Selector de perfil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet">
+<link href="./Yeray Espinosa — Cybersecurity & AI Security_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg: #151522;
+    --panel: #181816;
+    --text: #ffffff;
+    --muted: #ffffff;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --cyan: #00E5FF;
+    --red: #FF3333;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,229,255,0.08), transparent 45%),
+                radial-gradient(1200px 600px at 90% 90%, rgba(255,51,51,0.08), transparent 45%),
+                var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 18px;
+  }
+
+  .screen {
+    width: min(900px, 100%);
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-family: 'Orbitron', var(--sans);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: transparent;
+    background: linear-gradient(90deg, #f7d56b 0%, #ffffff 25%, #c8ff00 55%, #ff4a4a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 16px rgba(0, 229, 255, 0.18), 0 0 22px rgba(255, 51, 51, 0.18);
+    margin-bottom: 12px;
+  }
+
+  .name {
+    font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+
+  .name-bottom {
+    margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .sub {
+    font-family: 'Orbitron', var(--mono);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.84);
+    margin: 10px 0 30px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid #1a1a22;
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-decoration: none;
+    color: inherit;
+    display: grid;
+    gap: 12px;
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card.cyan:hover {
+    border-color: rgba(0,229,255,0.6);
+    box-shadow: 0 10px 28px rgba(0,229,255,0.15);
+  }
+
+  .card.red:hover {
+    border-color: rgba(255,51,51,0.6);
+    box-shadow: 0 10px 28px rgba(255,51,51,0.15);
+  }
+
+  .icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    margin: 0 auto;
+  }
+
+  .cyan .icon { background: rgba(0,229,255,0.12); }
+  .red .icon { background: rgba(255,51,51,0.12); }
+
+  .title {
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .cyan .title { color: var(--cyan); }
+  .red .title { color: var(--red); }
+
+  .desc {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .rayquaza-zone {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .rayquaza-phrase {
+    font-family: 'Orbitron', var(--sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.86);
+    margin-bottom: 14px;
+  }
+
+  .rayquaza-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .rayquaza {
+    width: min(240px, 82vw);
+    height: auto;
+    filter: drop-shadow(0 0 16px rgba(255, 200, 0, 0.22)) saturate(1.08);
+    opacity: 0.96;
+  }
+
+  .yoda-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0 18px;
+  }
+
+  .yoda {
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.45));
+    opacity: 0.95;
+  }
+
+  .footer {
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #2a2a32;
+  }
+
+  @media (max-width: 700px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="screen">
+    <div class="eyebrow">elige tu lado</div>
+    <div class="sub">Perfil seleccionar tú debes</div>
+
+    <div class="yoda-wrap">
+      <img class="yoda" src="./Yeray Espinosa — Cybersecurity & AI Security_files/Yoda.png" alt="Yoda">
+    </div>
+
+    <div class="cards">
+      <a class="card cyan" href="Yeray%20Espinosa%20%E2%80%94%20Cybersecurity%20%26%20AI%20Security.html">
+        <div class="icon">🛡️</div>
+        <div class="title">Cybersecurity</div>
+        <div class="desc">Blue Team · AI Security<br>SIEM/SOAR · Threat Hunting<br>IR & DFIR</div>
+      </a>
+
+      <a class="card red" href="ROJO.HTML">
+        <div class="icon">⚡</div>
+        <div class="title">Desarrollador</div>
+        <div class="desc">Fullstack · Backend<br>Java · TypeScript · AWS<br>Cloud & AI aplicada</div>
+      </a>
+    </div>
+
+    <div class="rayquaza-zone">
+      <div class="rayquaza-phrase">Aprender es vivir · elige con la mente y crece con la fuerza</div>
+      <div class="rayquaza-wrap">
+        <img class="rayquaza" src="./Yeray Espinosa — Cybersecurity & AI Security_files/10079.png" alt="Rayquaza">
+      </div>
+    </div>
+
+    <div class="name name-bottom">Yeray Espinosa Esteban</div>
+
+  </div>
+</body>
+</html>
