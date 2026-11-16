@@ -1,17 +1,15 @@
-import { MotionConfig } from 'framer-motion'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { About } from './components/About'
-import { Contact } from './components/Contact'
-import { Experience } from './components/Experience'
-import { Hero } from './components/Hero'
-import { Nav } from './components/Nav'
-import { Pokedex } from './components/Pokedex'
-import { Projects } from './components/Projects'
-import { Stack } from './components/Stack'
-import { Terminal } from './components/Terminal'
-import type { Palette } from './three/HeroScene'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { useGame } from './game/store'
+import { ZONES } from './game/zones'
+import { CVMode } from './ui/CVMode'
+import { Encounter } from './ui/Encounter'
+import { HUD } from './ui/HUD'
+import { Intro } from './ui/Intro'
+import { Joystick } from './ui/Joystick'
+import { ZoneDialog } from './ui/ZoneDialog'
+import { ZoneLabels } from './ui/ZoneLabels'
 
-const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
+const World = lazy(() => import('./game/World'))
 
 function supportsWebGL() {
   try {
@@ -22,60 +20,57 @@ function supportsWebGL() {
   }
 }
 
-function useEnv() {
-  return useMemo(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const small = window.matchMedia('(max-width: 768px)').matches
-    const weak = (navigator.hardwareConcurrency ?? 8) <= 4
-    return { use3D: !reduced && supportsWebGL(), lite: small || weak }
-  }, [])
+function Ready({ onReady }: { onReady: () => void }) {
+  useEffect(onReady, [onReady])
+  return null
 }
 
 export default function App() {
-  const { use3D, lite } = useEnv()
-  const [holocron, setHolocron] = useState(false)
-  const [dex, setDex] = useState(false)
-  const toggleHolocron = useCallback(() => setHolocron((h) => !h), [])
-  const openDex = useCallback(() => setDex(true), [])
-  const closeDex = useCallback(() => setDex(false), [])
+  const env = useMemo(() => ({
+    webgl: supportsWebGL(),
+    touch: window.matchMedia('(pointer: coarse)').matches,
+    mobile: window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches,
+  }), [])
+  const [ready, setReady] = useState(false)
+  const started = useGame((s) => s.started)
 
+  // global game keys: E/Enter inspect, Esc close, 1-5 travel
   useEffect(() => {
-    document.documentElement.dataset.mode = holocron ? 'holocron' : 'default'
-  }, [holocron])
-
-  // ↑↑↓↓←→←→BA unlocks the Holocron protocol
-  useEffect(() => {
-    let i = 0
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.tagName === 'INPUT') return
-      i = e.key === KONAMI[i] ? i + 1 : e.key === KONAMI[0] ? 1 : 0
-      if (i === KONAMI.length) { i = 0; toggleHolocron() }
+      const s = useGame.getState()
+      if (!s.started || s.encounter || s.cv) return
+      if (e.key === 'Escape') { if (s.open) s.close(); return }
+      if (s.open) return
+      if ((e.key === 'e' || e.key === 'E' || e.key === 'Enter') && s.near) { e.preventDefault(); s.openZone(s.near) }
+      const n = Number(e.key)
+      if (n >= 1 && n <= ZONES.length) s.goTo(ZONES[n - 1].id)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [toggleHolocron])
+  }, [])
 
-  const palette: Palette = holocron
-    ? { a: '#ff3b3b', b: '#ffb347', c: '#ffd27a' }
-    : { a: '#22e6ff', b: '#a15bff', c: '#3dff9a' }
+  if (!env.webgl) return <CVMode standalone />
 
   return (
-    <MotionConfig reducedMotion="user">
-      <a href="#perfil" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded focus:bg-neon focus:px-3 focus:py-2 focus:text-bg">
-        Saltar al contenido
-      </a>
-      <Nav holocron={holocron} onToggle={toggleHolocron} />
-      <Hero palette={palette} use3D={use3D} lite={lite} onPokeball={openDex} />
-      <main className="relative">
-        <div className="grid-bg pointer-events-none absolute inset-0 opacity-25" />
-        <About />
-        <Stack holocron={holocron} />
-        <Experience />
-        <Projects holocron={holocron} />
-        <Terminal onScan={openDex} onHolocron={toggleHolocron} holocron={holocron} />
-        <Contact />
-      </main>
-      <Pokedex open={dex} onClose={closeDex} />
-    </MotionConfig>
+    <>
+      <div className="no-print fixed inset-0">
+        <Suspense fallback={null}>
+          <World mobile={env.mobile} />
+          <Ready onReady={() => setReady(true)} />
+        </Suspense>
+      </div>
+      <ZoneLabels />
+      {started ? (
+        <>
+          <HUD touch={env.touch} />
+          {env.touch && <Joystick />}
+        </>
+      ) : (
+        <Intro touch={env.touch} ready={ready} />
+      )}
+      <ZoneDialog />
+      <Encounter />
+      <CVMode />
+    </>
   )
 }
